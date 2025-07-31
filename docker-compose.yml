@@ -5,7 +5,7 @@ services:
     container_name: avolabs-swat
     build: .
     ports:
-      - "8000:8000"    # port:container Change if Necessary
+      - "8123:8000"    # port:container Change if Necessary
       - "445:445"
       - "139:139"
     volumes:
