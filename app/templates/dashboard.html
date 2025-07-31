@@ -6,23 +6,51 @@
   <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
 </head>
 <body>
+  <header class="page-header">
+    <img src="{{ url_for('static', path='images/banner.png') }}" alt="Banner" class="banner-img" />
+    <h1 class="header-title">SWAT</h1>
+  </header>
+
   <div class="dashboard-container">
     <ul class="shares-list">
-      {% for name in shares %}
+      {% for name, info in shares.items() %}
       <li class="share-item">
         <div class="share-header">
           <span class="share-name">{{ name }}</span>
-          <button class="btn-toggle" data-target="opts-{{ loop.index }}">Options ▼</button>
         </div>
+        <div class="share-inline">
+          <div><strong>Path:</strong> {{ info.path }}</div>
+          <div><strong>Readers:</strong> {{ info.readers|join(', ') }}</div>
+          <div><strong>Writers:</strong> {{ info.writers|join(', ') }}</div>
+        </div>
+
+        <button class="btn-toggle" data-target="opts-{{ loop.index }}">Manage ⯆</button>
         <div id="opts-{{ loop.index }}" class="share-options hidden">
-          <form method="post" action="/remove">
-            <input type="hidden" name="name" value="{{ name }}">
-            <button type="submit">Remove Share</button>
+          <form method="post" action="/update-share/{{ name }}">
+            <label>Share Name</label><input name="name" value="{{ name }}" />
+            <label>Path</label><input name="path" value="{{ info.path }}" />
+            <label>Readers (comma‑separated)</label><input name="readers" value="{{ info.readers|join(', ') }}" />
+            <label>Writers (comma‑separated)</label><input name="writers" value="{{ info.writers|join(', ') }}" />
+            <button type="submit" class="btn-primary">Save Changes</button>
           </form>
+
+          <div class="connect-info">
+            <div class="conn-row"><img src="{{ url_for('static', path='images/windows.png') }}"><span>\\\\(IP)\\{{ name }}</span></div>
+            <div class="conn-row"><img src="{{ url_for('static', path='images/mac.png') }}"><span>smb://(IP)/{{ name }}</span></div>
+            <div class="conn-row"><img src="{{ url_for('static', path='images/linux.png') }}"><span>smb://(IP)/{{ name }}</span></div>
+          </div>
+
+          <button class="btn-delete" onclick="if(!confirm('Are you sure? This won’t delete files/folders. You’ll have to re-create the share.')) return false;">
+            Delete Share
+          </button>
         </div>
       </li>
       {% endfor %}
     </ul>
+
+    <form method="post" action="/add" class="create-share-form">
+      <button type="submit" class="btn-create">＋ Create a share</button>
+    </form>
   </div>
 
   <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
