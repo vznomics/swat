@@ -12,7 +12,7 @@
       <img src="/static/images/banner.png" alt="AvoLabs Logo" class="logo" />
       <h1>AyoLabs <span>SWAT</span></h1>
     </div>
-    <button class="btn btn-create" onclick="toggleModal('createModal')">
+    <button id="openModalBtn" class="btn btn-create">
       ✪ Create a Share
     </button>
   </header>
@@ -24,7 +24,7 @@
         <div class="share-box">
           <div class="share-header">
             <strong>{{ share.name }}</strong>
-            <button class="btn-icon" onclick="toggleDropdown(this)">
+            <button class="settings-toggle btn-icon">
               <span>⚙</span>
             </button>
           </div>
@@ -32,7 +32,7 @@
           <p><strong>Read:</strong> {{ share.read_users | join(', ') }}</p>
           <p><strong>Write:</strong> {{ share.write_users | join(', ') }}</p>
 
-          <div class="dropdown hidden">
+          <div class="dropdown-content hidden">
             <form id="remove-form-{{ loop.index }}" method="post" action="/remove">
               <input type="hidden" name="name" value="{{ share.name }}" />
               <button class="btn btn-danger" type="button" onclick="confirmDelete('remove-form-{{ loop.index }}')">
@@ -46,7 +46,7 @@
   </main>
 
   <!-- Modal -->
-  <div id="createModal" class="modal hidden">
+  <div id="createShareModal" class="modal hidden">
     <div class="modal-content">
       <h3>Create Share</h3>
       <form method="post" action="/add">
@@ -59,7 +59,7 @@
         </label>
         <div class="modal-actions">
           <button class="btn" type="submit">➕ Create</button>
-          <button class="btn btn-cancel" type="button" onclick="toggleModal('createModal')">❌ Cancel</button>
+          <button id="closeModalBtn" class="btn btn-cancel" type="button">❌ Cancel</button>
         </div>
       </form>
     </div>
