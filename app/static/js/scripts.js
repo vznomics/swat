@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Abrir/Cerrar ajustes por tarjeta
   document.querySelectorAll('.settings-toggle').forEach(button => {
     button.addEventListener('click', () => {
       const box = button.closest('.share-box');
-      box.classList.toggle('open');
+      const dropdown = box.querySelector('.edit-share-content');
+      dropdown.classList.toggle('hidden');
     });
   });
 
-  // Modal
   const openModalBtn = document.getElementById('openModalBtn');
   const modal = document.getElementById('createShareModal');
   const closeModalBtn = document.getElementById('closeModalBtn');
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Confirmación al eliminar
   window.confirmDelete = function (formId) {
     if (confirm("Are you sure you want to delete this share?")) {
       document.getElementById(formId).submit();
