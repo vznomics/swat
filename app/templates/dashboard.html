@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>AvoLabs SWAT</title></head>
+<body>
+  <h2>Welcome to AvoLabs SWAT</h2>
+  <form action="/add" method="post">
+    <input name="name" placeholder="Share Name" required>
+    <input name="path" placeholder="Path (e.g., /mnt/shares/myshare)" required>
+    <label><input type="checkbox" name="readonly"> Read Only</label>
+    <button type="submit">Add Share</button>
+  </form>
+  <h3>Current Shares</h3>
+  <ul>
+    {% for share in shares %}
+      <li>{{ share }}
+        <form action="/remove" method="post" style="display:inline;">
+          <input type="hidden" name="name" value="{{ share }}">
+          <button type="submit">Remove</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
