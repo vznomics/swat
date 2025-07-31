@@ -35,7 +35,10 @@ def dashboard(request: Request):
     user = request.session.get("user")
     if not user:
         return RedirectResponse("/")
-    shares = list_shares()  # <- Make sure this returns the structure above
+    
+    shares = list_shares()
+
+    print("SHARES STRUCTURE >>>", shares)  # Debug line
     return templates.TemplateResponse("dashboard.html", {"request": request, "shares": shares})
 
 @app.post("/add")
