@@ -64,3 +64,19 @@ def add(request: Request, name: str = Form(...), path: str = Form(...), readonly
 def remove(request: Request, name: str = Form(...)):
     remove_share(name)
     return RedirectResponse("/dashboard", status_code=302)
+
+@app.post("/edit")
+def edit_share(
+    request: Request,
+    original_name: str = Form(...),
+    name: str = Form(...),
+    path: str = Form(...),
+    read: str = Form(""),
+    write: str = Form(""),
+    readonly: bool = Form(False),
+):
+    read_users = [u.strip() for u in read.split(",") if u.strip()]
+    write_users = [u.strip() for u in write.split(",") if u.strip()]
+    update_share(original_name, name, path, read_users, write_users, readonly)
+    return RedirectResponse("/dashboard", status_code=302)
+
