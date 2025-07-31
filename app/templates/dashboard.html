@@ -12,9 +12,7 @@
       <img src="/static/images/banner.png" alt="AvoLabs Logo" class="logo" />
       <h1>AyoLabs <span>SWAT</span></h1>
     </div>
-    <button id="openModalBtn" class="btn btn-create">
-      ✪ Create a Share
-    </button>
+    <button id="openModalBtn" class="btn btn-create">✪ Create a Share</button>
   </header>
 
   <main class="main">
@@ -23,21 +21,31 @@
       {% for share in shares %}
         <div class="share-box">
           <div class="share-header">
+            <button class="settings-toggle btn-icon">⚙</button>
+            <form id="remove-form-{{ loop.index }}" method="post" action="/remove" style="display:inline;">
+              <input type="hidden" name="name" value="{{ share.name }}" />
+              <button class="btn btn-danger btn-icon" type="button" onclick="confirmDelete('remove-form-{{ loop.index }}')">🗑️</button>
+            </form>
             <strong>{{ share.name }}</strong>
-            <button class="settings-toggle btn-icon">
-              <span>⚙</span>
-            </button>
           </div>
+
           <p><strong>Path:</strong> {{ share.path }}</p>
           <p><strong>Read:</strong> {{ share.read_users | join(', ') }}</p>
           <p><strong>Write:</strong> {{ share.write_users | join(', ') }}</p>
 
-          <div class="dropdown-content hidden">
-            <form id="remove-form-{{ loop.index }}" method="post" action="/remove">
-              <input type="hidden" name="name" value="{{ share.name }}" />
-              <button class="btn btn-danger" type="button" onclick="confirmDelete('remove-form-{{ loop.index }}')">
-                🔴 Delete Share
-              </button>
+          <div class="dropdown-content hidden edit-share-content">
+            <form method="post" action="/edit" class="edit-form">
+              <input type="hidden" name="original_name" value="{{ share.name }}">
+              <input type="text" name="name" value="{{ share.name }}" placeholder="Share Name" required />
+              <input type="text" name="path" value="{{ share.path }}" placeholder="Path" required />
+              <input type="text" name="read" value="{{ share.read_users | join(', ') }}" placeholder="Read Users (comma-separated)" />
+              <input type="text" name="write" value="{{ share.write_users | join(', ') }}" placeholder="Write Users (comma-separated)" />
+              <label class="readonly">
+                <input type="checkbox" name="readonly" {% if share.readonly %}checked{% endif %}/> Read Only
+              </label>
+              <div class="edit-actions">
+                <button type="submit" class="btn">💾 Save</button>
+              </div>
             </form>
           </div>
         </div>
