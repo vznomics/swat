@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.btn-toggle').forEach(btn => {
+  document.querySelectorAll('.dropdown-btn').forEach((btn, index) => {
     btn.addEventListener('click', () => {
-      const tgt = document.getElementById(btn.getAttribute('data-target'));
-      tgt.classList.toggle('hidden');
+      const shareBox = btn.closest('.share-box');
+      shareBox.classList.toggle('open');
     });
   });
+
+  window.confirmDelete = function (formId) {
+    if (confirm("Are you sure you want to delete this share?")) {
+      document.getElementById(formId).submit();
+    }
+  };
 });
