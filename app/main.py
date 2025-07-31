@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI()  # ✅ Only define this once!
 
 # Mount static directory
-app.mount("/static", StaticFiles(directory="/app/static"), name="static")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Add session middleware
 app.add_middleware(SessionMiddleware, secret_key="swat_secret")
