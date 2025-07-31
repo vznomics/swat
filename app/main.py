@@ -4,6 +4,10 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from .auth import authenticate_user
 from .samba_control import list_shares, add_share, remove_share
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="swat_secret")
