@@ -1,80 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard - SWAT</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <script>
-        function toggleDropdown(id) {
-            document.querySelectorAll('.dropdown-content').forEach((el, i) => {
-                if (i === id) {
-                    el.style.display = el.style.display === 'block' ? 'none' : 'block';
-                } else {
-                    el.style.display = 'none';
-                }
-            });
-        }
 
-        function confirmDelete(formId) {
-            if (confirm("Are you sure? This won’t delete folders/files, but the share will be removed.")) {
-                document.getElementById(formId).submit();
-            }
-        }
-    </script>
-</head>
-<body>
-    <header class="dashboard-header">
-        <img src="/static/images/banner.png" alt="Banner" class="banner">
-        <h1 class="swat-title">SWAT</h1>
-    </header>
+{% extends "base.html" %}
 
-    <div class="shares-container">
-        {% for share in shares %}
-        <div class="share-box">
-            <div class="share-info">
-                <h3>{{ share.name }}</h3>
-                <p><strong>Path:</strong> {{ share.path }}</p>
-                <p><strong>Read:</strong> {{ share.read_users | join(", ") }}</p>
-                <p><strong>Write:</strong> {{ share.write_users | join(", ") }}</p>
-            </div>
+{% block title %}Dashboard{% endblock %}
 
-            <button class="dropdown-btn" onclick="toggleDropdown({{ loop.index0 }})">⚙️</button>
+{% block content %}
+<div class="dashboard-header">
+  <h2>Shares</h2>
+  <form action="/add" method="post" class="create-share">
+    <input type="text" name="name" placeholder="Share Name" required />
+    <input type="text" name="path" placeholder="Path" required />
+    <input type="text" name="read_users" placeholder="Read Users (comma-separated)" />
+    <input type="text" name="write_users" placeholder="Write Users (comma-separated)" />
+    <label><input type="checkbox" name="readonly" /> Read Only</label>
+    <button type="submit" class="create-btn">➕ Create a Share</button>
+  </form>
+</div>
 
-            <div class="dropdown-content">
-                <form method="post" action="/edit-name">
-                    <label>Share Name:</label>
-                    <input type="text" name="name" value="{{ share.name }}">
-                </form>
-
-                <form method="post" action="/edit-path">
-                    <label>Path:</label>
-                    <input type="text" name="path" value="{{ share.path }}">
-                </form>
-
-                <form method="post" action="/edit-users">
-                    <label>Read Users:</label>
-                    <input type="text" name="read_users" value="{{ share.read_users | join(',') }}">
-                    <label>Write Users:</label>
-                    <input type="text" name="write_users" value="{{ share.write_users | join(',') }}">
-                </form>
-
-                <div class="connect-paths">
-                    <p><img src="/static/images/windows.png" class="os-icon"> <code>\\(your-ip)\{{ share.name }}</code></p>
-                    <p><img src="/static/images/macos.png" class="os-icon"> <code>smb://(your-ip)/{{ share.name }}</code></p>
-                    <p><img src="/static/images/linux.png" class="os-icon"> <code>smb://(your-ip)/{{ share.name }}</code></p>
-                </div>
-
-                <form id="delete-form-{{ loop.index }}" method="post" action="/remove">
-                    <input type="hidden" name="name" value="{{ share.name }}">
-                    <button type="button" class="delete-btn" onclick="confirmDelete('delete-form-{{ loop.index }}')">🗑️ Delete Share</button>
-                </form>
-            </div>
-        </div>
-        {% endfor %}
+<div class="shares-container">
+  {% for share in shares %}
+  <div class="share-box">
+    <div class="share-info">
+      <h3>{{ share.name }}</h3>
+      <p><strong>Path:</strong> {{ share.path }}</p>
+      <p><strong>Read:</strong> {{ share.read_users | join(", ") }}</p>
+      <p><strong>Write:</strong> {{ share.write_users | join(", ") }}</p>
     </div>
 
-    <div class="create-share">
-        <a href="/create"><button class="create-btn">➕ Create a Share</button></a>
+    <button class="dropdown-btn">⚙️</button>
+
+    <div class="dropdown-content">
+      <form action="/edit-name" method="post">
+        <label>Share Name:</label>
+        <input name="name" type="text" value="{{ share.name }}" />
+      </form>
+
+      <form action="/edit-path" method="post">
+        <label>Path:</label>
+        <input name="path" type="text" value="{{ share.path }}" />
+      </form>
+
+      <form action="/edit-users" method="post">
+        <label>Read Users:</label>
+        <input name="read_users" type="text" value="{{ share.read_users | join(',') }}" />
+        <label>Write Users:</label>
+        <input name="write_users" type="text" value="{{ share.write_users | join(',') }}" />
+      </form>
+
+      <div class="connect-paths">
+        <p><img class="os-icon" src="/static/images/windows.png" /> <code>\\your-ip\{{ share.name }}</code></p>
+        <p><img class="os-icon" src="/static/images/apple.png" /> <code>smb://your-ip/{{ share.name }}</code></p>
+        <p><img class="os-icon" src="/static/images/linux.png" /> <code>smb://your-ip/{{ share.name }}</code></p>
+      </div>
+
+      <form action="/remove" id="delete-form-{{ loop.index }}" method="post">
+        <input name="name" type="hidden" value="{{ share.name }}" />
+        <button class="delete-btn" type="button" onclick="confirmDelete('delete-form-{{ loop.index }}')">🗑️ Delete Share</button>
+      </form>
     </div>
-</body>
-</html>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
