@@ -110,6 +110,15 @@ button:hover,
   margin-bottom: 1rem;
 }
 
+.share-info h3 {
+  margin-bottom: 0.5rem;
+}
+
+.share-info p {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+}
+
 .os-icon {
   width: 24px;
   vertical-align: middle;
@@ -139,3 +148,15 @@ button:hover,
   font-size: 0.9rem;
   color: #bbb;
 }
+
+strong {
+  color: #90caf9;
+}
+
+
+
+
+
+
+
+
