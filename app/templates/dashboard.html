@@ -1,24 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head><title>AvoLabs SWAT</title></head>
-<body>
-  <h2>Welcome to AvoLabs SWAT</h2>
-  <form action="/add" method="post">
-    <input name="name" placeholder="Share Name" required>
-    <input name="path" placeholder="Path (e.g., /mnt/shares/myshare)" required>
-    <label><input type="checkbox" name="readonly"> Read Only</label>
-    <button type="submit">Add Share</button>
-  </form>
-  <h3>Current Shares</h3>
-  <ul>
+{% extends "base.html" %}
+{% block title %}Dashboard - Samba Manager{% endblock %}
+
+{% block content %}
+<section class="dashboard-container">
+  <h2>Your Samba Shares</h2>
+  <ul class="shares-list">
     {% for share in shares %}
-      <li>{{ share }}
-        <form action="/remove" method="post" style="display:inline;">
-          <input type="hidden" name="name" value="{{ share }}">
-          <button type="submit">Remove</button>
+    <li class="share-item">
+      <div class="share-header">
+        <span class="share-name">{{ share.name }}</span>
+        <button class="btn-toggle" data-target="share-options-{{ loop.index }}">Options ▼</button>
+      </div>
+
+      <div id="share-options-{{ loop.index }}" class="share-options hidden">
+        <form method="post" action="/update-share/{{ share.id }}">
+          <label>Share Name</label>
+          <input name="name" value="{{ share.name }}" />
+
+          <label>Permissions</label>
+          <select name="permissions">
+            <option value="read" {% if share.permissions == 'read' %}selected{% endif %}>Read</option>
+            <option value="write" {% if share.permissions == 'write' %}selected{% endif %}>Write</option>
+            <option value="admin" {% if share.permissions == 'admin' %}selected{% endif %}>Admin</option>
+          </select>
+
+          <label>Allowed Users (comma separated)</label>
+          <input name="allowed_users" value="{{ share.allowed_users | join(', ') }}" />
+
+          <button type="submit" class="btn-primary">Save</button>
         </form>
-      </li>
+      </div>
+    </li>
+    {% else %}
+    <li>No shares available.</li>
     {% endfor %}
   </ul>
-</body>
-</html>
+</section>
+{% endblock %}
