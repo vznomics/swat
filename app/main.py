@@ -6,11 +6,12 @@ from .auth import authenticate_user
 from .samba_control import list_shares, add_share, remove_share
 from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
+import os
+from pathlib import Path
 
-app = FastAPI()  # ✅ Only define this once!
+BASE_DIR = Path(__file__).resolve().parent
 
-# Mount static directory
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 # Add session middleware
 app.add_middleware(SessionMiddleware, secret_key="swat_secret")
