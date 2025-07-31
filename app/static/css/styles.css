@@ -172,7 +172,36 @@ main {
   background-color: #6cb893;
 }
 
+.edit-share-content {
+  margin-top: 10px;
+  background-color: #1f2225;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #444;
+}
 
+.edit-share-content input[type="text"] {
+  width: 100%;
+  padding: 6px;
+  margin: 4px 0;
+  background: #2a2d30;
+  border: 1px solid #555;
+  color: #eee;
+  border-radius: 4px;
+}
+
+.edit-share-content label {
+  display: block;
+  margin: 6px 0;
+  font-size: 0.9rem;
+}
+
+.edit-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 
 
 
