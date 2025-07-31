@@ -1,39 +1,29 @@
-{% extends "base.html" %}
-{% block title %}Dashboard - Samba Manager{% endblock %}
-
-{% block content %}
-<section class="dashboard-container">
-  <h2>Your Samba Shares</h2>
-  <ul class="shares-list">
-    {% for share in shares %}
-    <li class="share-item">
-      <div class="share-header">
-        <span class="share-name">{{ share.name }}</span>
-        <button class="btn-toggle" data-target="share-options-{{ loop.index }}">Options ▼</button>
-      </div>
-
-      <div id="share-options-{{ loop.index }}" class="share-options hidden">
-        <form method="post" action="/update-share/{{ share.id }}">
-          <label>Share Name</label>
-          <input name="name" value="{{ share.name }}" />
-
-          <label>Permissions</label>
-          <select name="permissions">
-            <option value="read" {% if share.permissions == 'read' %}selected{% endif %}>Read</option>
-            <option value="write" {% if share.permissions == 'write' %}selected{% endif %}>Write</option>
-            <option value="admin" {% if share.permissions == 'admin' %}selected{% endif %}>Admin</option>
-          </select>
-
-          <label>Allowed Users (comma separated)</label>
-          <input name="allowed_users" value="{{ share.allowed_users | join(', ') }}" />
-
-          <button type="submit" class="btn-primary">Save</button>
-        </form>
-      </div>
-    </li>
-    {% else %}
-    <li>No shares available.</li>
-    {% endfor %}
-  </ul>
-</section>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AvoLabs SWAT</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+</head>
+<body>
+  <div class="dashboard-container">
+    <ul class="shares-list">
+      {% for name in shares %}
+      <li class="share-item">
+        <div class="share-header">
+          <span class="share-name">{{ name }}</span>
+          <button class="btn-toggle" data-target="opts-{{ loop.index }}">Options ▼</button>
+        </div>
+        <div id="opts-{{ loop.index }}" class="share-options hidden">
+          <form method="post" action="/remove">
+            <input type="hidden" name="name" value="{{ name }}">
+            <button type="submit">Remove Share</button>
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <script src="{{ url_for('static', path='js/scripts.js') }}"></script>
+</body>
+</html>
