@@ -74,3 +74,12 @@ def remove_share(name: str):
     with open(SMB_CONF_PATH, "w") as f:
         f.writelines(new_lines)
     os.system("smbcontrol all reload-config")
+
+def update_share(original_name, new_name, new_path, read_users, write_users, readonly):
+    # TODO: Implementar edición real en el archivo smb.conf
+    print(f"Updating share '{original_name}' to '{new_name}' at path '{new_path}'")
+    print(f"Read users: {read_users}")
+    print(f"Write users: {write_users}")
+    print(f"Readonly: {readonly}")
+    # Aquí deberías editar el archivo smb.conf y reiniciar el servicio si aplica
+
