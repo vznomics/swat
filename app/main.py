@@ -1,25 +1,24 @@
-from fastapi import Request, Form
+
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from .auth import authenticate_user
 from .samba_control import list_shares, add_share, remove_share
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI()  # Create app instance first
+app = FastAPI()  # ✅ Only define this once!
 
+# Mount static directory
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-# ... your routes and other setup here ...
-
-
-
-app = FastAPI()
+# Add session middleware
 app.add_middleware(SessionMiddleware, secret_key="swat_secret")
 
+# Setup templates
 templates = Jinja2Templates(directory="app/templates")
 
+# Routes
 @app.get("/", response_class=HTMLResponse)
 def login_form(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
@@ -48,4 +47,3 @@ def add(request: Request, name: str = Form(...), path: str = Form(...), readonly
 def remove(request: Request, name: str = Form(...)):
     remove_share(name)
     return RedirectResponse("/dashboard", status_code=302)
-
