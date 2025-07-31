@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  avolabs-swat:
+    container_name: avolabs-swat
+    build: .
+    ports:
+      - "8000:8000"    # port:container Change if Necessary
+      - "445:445"
+      - "139:139"
+    volumes:
+      - /etc/samba:/etc/samba
+      - /var/samba-shares:/mnt/shares
+    environment:
+      - SWAT_ADMIN=admin    
+      - SWAT_PASSWORD=changeme    # !! CHANGE VERY IMPORTANT, YOUR INSTALLATION WILL BE AT RISK IF YOU DONT
+    restart: unless-stopped
