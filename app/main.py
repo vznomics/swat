@@ -1,12 +1,18 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from .auth import authenticate_user
 from .samba_control import list_shares, add_share, remove_share
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+app = FastAPI()  # Create app instance first
+
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+# ... your routes and other setup here ...
+
 
 
 app = FastAPI()
