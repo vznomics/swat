@@ -1,27 +1,31 @@
-
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
-from starlette.middleware.sessions import SessionMiddleware
-from .auth import authenticate_user
-from .samba_control import list_shares, add_share, remove_share
 from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from starlette.middleware.sessions import SessionMiddleware
+from pathlib import Path
 
+from .auth import authenticate_user
+from .samba_control import list_shares, add_share, remove_share
+
+# Definir rutas base correctamente
+BASE_DIR = Path(__file__).resolve().parent
+STATIC_DIR = BASE_DIR / "static"
+TEMPLATES_DIR = BASE_DIR / "templates"
+
+# Crear instancia de la app
 app = FastAPI()
 
-# MONTAR ESTÁTICOS
-STATIC_DIR = BASE_DIR.parent / "app" / "static"
+# Montar archivos estáticos
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-templates = Jinja2Templates(directory="app/templates")
 
-# Add session middleware
+# Añadir middleware de sesión
 app.add_middleware(SessionMiddleware, secret_key="swat_secret")
 
-# Setup templates
-templates = Jinja2Templates(directory="app/templates")
+# Configurar templates
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
-# Routes
+# Rutas
 @app.get("/", response_class=HTMLResponse)
 def login_form(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
@@ -40,8 +44,7 @@ def dashboard(request: Request):
         return RedirectResponse("/")
     
     shares = list_shares()
-
-    print("SHARES STRUCTURE >>>", shares)  # Debug line
+    print("SHARES STRUCTURE >>>", shares)  # Línea de depuración
     return templates.TemplateResponse("dashboard.html", {"request": request, "shares": shares})
 
 @app.post("/add")
