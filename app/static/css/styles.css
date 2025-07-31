@@ -23,6 +23,7 @@ header, .dashboard-header {
   display: flex;
   align-items: center;
   gap: 1rem;
+  height: 40px;
   justify-content: center;
 }
 
