@@ -6,15 +6,14 @@ from .auth import authenticate_user
 from .samba_control import list_shares, add_share, remove_share
 from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
+from fastapi.templating import Jinja2Templates
 
-BASE_DIR = Path(__file__).resolve().parent
+app = FastAPI()
 
-app = FastAPI()  # create the app instance first!
-
-app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
-
-# your routes here
+# MONTAR ESTÁTICOS
+STATIC_DIR = BASE_DIR.parent / "app" / "static"
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+templates = Jinja2Templates(directory="app/templates")
 
 # Add session middleware
 app.add_middleware(SessionMiddleware, secret_key="swat_secret")
