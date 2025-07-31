@@ -1,88 +1,70 @@
-
-{% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
-
-{% block content %}
-<div class="dashboard-header">
-  <h2>Shares</h2>
-  <button id="toggle-create-form" class="create-btn">➕ Create a Share</button>
-</div>
-
-<div id="create-share-form" class="create-share hidden">
-  <form action="/add" method="post">
-    <input type="text" name="name" placeholder="Share Name" required />
-    <input type="text" name="path" placeholder="Path" required />
-    <input type="text" name="read_users" placeholder="Read Users (comma-separated)" />
-    <input type="text" name="write_users" placeholder="Write Users (comma-separated)" />
-    <label><input type="checkbox" name="readonly" /> Read Only</label>
-    <button type="submit" class="create-btn">Create</button>
-  </form>
-</div>
-
-<div class="shares-container">
-  {% for share in shares %}
-  <div class="share-box">
-    <div class="share-info">
-      <h3>{{ share.name }}</h3>
-      <p><strong>Path:</strong> {{ share.path }}</p>
-      <p><strong>Read:</strong> {{ share.read_users | join(", ") }}</p>
-      <p><strong>Write:</strong> {{ share.write_users | join(", ") }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SWAT Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <img src="/static/images/logo.png" alt="AvoLabs Logo" class="logo" />
+      <h1>AyoLabs <span>SWAT</span></h1>
     </div>
+    <button class="btn btn-create" onclick="toggleModal('createModal')">
+      ✪ Create a Share
+    </button>
+  </header>
 
-    <button class="dropdown-btn">⚙️</button>
+  <main class="main">
+    <h2>Shares</h2>
+    <div class="share-grid">
+      {% for share in shares %}
+        <div class="share-box">
+          <div class="share-header">
+            <strong>{{ share.name }}</strong>
+            <button class="btn-icon" onclick="toggleDropdown(this)">
+              <span>⚙</span>
+            </button>
+          </div>
+          <p><strong>Path:</strong> {{ share.path }}</p>
+          <p><strong>Read:</strong> {{ share.read_users | join(', ') }}</p>
+          <p><strong>Write:</strong> {{ share.write_users | join(', ') }}</p>
 
-    <div class="dropdown-content">
-      <form action="/edit-name" method="post">
-        <label>Share Name:</label>
-        <input name="name" type="text" value="{{ share.name }}" />
-      </form>
+          <div class="dropdown hidden">
+            <form id="remove-form-{{ loop.index }}" method="post" action="/remove">
+              <input type="hidden" name="name" value="{{ share.name }}" />
+              <button class="btn btn-danger" type="button" onclick="confirmDelete('remove-form-{{ loop.index }}')">
+                🔴 Delete Share
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
 
-      <form action="/edit-path" method="post">
-        <label>Path:</label>
-        <input name="path" type="text" value="{{ share.path }}" />
-      </form>
-
-      <form action="/edit-users" method="post">
-        <label>Read Users:</label>
-        <input name="read_users" type="text" value="{{ share.read_users | join(',') }}" />
-        <label>Write Users:</label>
-        <input name="write_users" type="text" value="{{ share.write_users | join(',') }}" />
-      </form>
-
-      <div class="connect-paths">
-        <p><img class="os-icon" src="/static/images/windows.png" /> <code>\\your-ip\{{ share.name }}</code></p>
-        <p><img class="os-icon" src="/static/images/macos.png" /> <code>smb://your-ip/{{ share.name }}</code></p>
-        <p><img class="os-icon" src="/static/images/linux.png" /> <code>smb://your-ip/{{ share.name }}</code></p>
-      </div>
-
-      <form action="/remove" id="delete-form-{{ loop.index }}" method="post">
-        <input name="name" type="hidden" value="{{ share.name }}" />
-        <button class="delete-btn" type="button" onclick="confirmDelete('delete-form-{{ loop.index }}')">🗑️ Delete Share</button>
+  <!-- Modal -->
+  <div id="createModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Create Share</h3>
+      <form method="post" action="/add">
+        <input type="text" name="name" placeholder="Share Name" required />
+        <input type="text" name="path" placeholder="Path" required />
+        <input type="text" name="read" placeholder="Read Users (comma-separated)" />
+        <input type="text" name="write" placeholder="Write Users (comma-separated)" />
+        <label class="readonly">
+          <input type="checkbox" name="readonly" /> Read Only
+        </label>
+        <div class="modal-actions">
+          <button class="btn" type="submit">➕ Create</button>
+          <button class="btn btn-cancel" type="button" onclick="toggleModal('createModal')">❌ Cancel</button>
+        </div>
       </form>
     </div>
   </div>
-  {% endfor %}
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.dropdown-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const shareBox = btn.closest('.share-box');
-      shareBox.classList.toggle('open');
-    });
-  });
-
-  document.getElementById('toggle-create-form').addEventListener('click', () => {
-    document.getElementById('create-share-form').classList.toggle('hidden');
-  });
-
-  window.confirmDelete = function (formId) {
-    if (confirm("Are you sure you want to delete this share?")) {
-      document.getElementById(formId).submit();
-    }
-  };
-});
-</script>
-{% endblock %}
-
+  <script src="/static/script.js"></script>
+</body>
+</html>
