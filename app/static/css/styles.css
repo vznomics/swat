@@ -1,129 +1,136 @@
-/* Dark mode base */
+/* Base styles */
 body {
-  background-color: #1f1f23;
-  color: #e8e8e8;
-  font-family: Inter, sans-serif;
-}
-
-/* Header/banner */
-.page-header {
-  text-align: center;
-  padding: 20px;
-  background: #282830;
-}
-.banner-img {
-  max-width: 100%;
-  height: auto;
-}
-.header-title {
-  font-size: 2rem;
-  color: #59e185;
-  margin-top: -10px;
-}
-
-/* Dashboard layout */
-.dashboard-container {
-  padding: 20px;
-}
-.shares-list {
-  list-style: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1e1e2f;
+  color: #e0e0e0;
   margin: 0;
   padding: 0;
 }
-.share-item {
-  background: #2a2a33;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-}
-.share-header .share-name {
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: #59e185;
-}
-.share-inline {
-  margin-top: 8px;
-  font-size: .95rem;
-  line-height: 1.4;
-}
-.btn-toggle {
-  margin-top: 8px;
-  background: #59e185;
-  color: #1f1f23;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
+
+a {
+  color: #61dafb;
+  text-decoration: none;
 }
 
-/* Share options panel */
-.share-options {
-  margin-top: 12px;
-  border-top: 1px solid #3a3a44;
-  padding-top: 12px;
+header, .dashboard-header {
+  background-color: #2d2d44;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #444;
 }
-.share-options.hidden {
-  display: none;
-}
-.share-options label {
-  display: block;
-  margin-top: 10px;
-  margin-bottom: 4px;
-}
-.share-options input, .share-options select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #555;
-  border-radius: 4px;
-  background: #1f1f23;
-  color: #e8e8e8;
-}
-.btn-primary {
-  margin-top: 10px;
-  background: #59e185;
-  color: #1f1f23;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  border-radius: 4px;
-}
-.connect-info {
-  margin-top: 12px;
-}
-.conn-row {
+
+.banner {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 6px;
+  gap: 1rem;
+  justify-content: center;
 }
-.conn-row img {
-  width: 20px;
-  height: 20px;
+
+.logo {
+  height: 48px;
+  width: auto;
 }
-.btn-delete {
-  margin-top: 15px;
-  background: #d9534f;
-  color: white;
-  border: none;
-  padding: 8px;
+
+.swat-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.login-container {
+  max-width: 400px;
+  margin: 3rem auto;
+  background-color: #2d2d44;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+input[type="text"],
+input[type="password"] {
   width: 100%;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-/* Create share button */
-.create-share-form {
-  margin-top: 20px;
-  text-align: left;
-}
-.btn-create {
-  background: #5bc0de;
-  color: #1f1f23;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
   border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
+  border-radius: 4px;
+  background-color: #1e1e2f;
+  color: #fff;
+}
+
+input[type="submit"],
+button,
+.create-btn,
+.delete-btn {
+  background-color: #007bff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover,
+button:hover,
+.create-btn:hover,
+.delete-btn:hover {
+  background-color: #0056b3;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shares-container {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.share-box {
+  background-color: #2d2d44;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.share-info {
+  margin-bottom: 1rem;
+}
+
+.os-icon {
+  width: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.dropdown-btn {
+  background-color: #343a40;
+  color: white;
+  padding: 0.5rem;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
+.dropdown-content {
+  display: none;
+  background-color: #444;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+
+.btn-toggle.active + .dropdown-content {
+  display: block;
+}
+
+.connect-paths {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #bbb;
+}
